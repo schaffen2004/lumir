@@ -43,13 +43,16 @@ class LLMClient(ABC):
             OpenAI: The OpenAI client.
         """
         try:
+            
             model =  OpenAI(
                 api_key=self.config.api_key,
                 base_url=self.config.base_url,
             )
+            
             return model
         except Exception as e:
             return e
             
     def client(self):
+        print(self.config.api_key)
         return self.openai_client()
