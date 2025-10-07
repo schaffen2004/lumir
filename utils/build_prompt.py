@@ -50,7 +50,9 @@ def build_block_prompt(payload: Union[str, Dict]) -> str:
     context = output.get('context')
     user_question = input.get('user_question','')
     external_data = input.get('external_data','')
-
+    context = config.get("context_souces",{})
+    definition = context.get("definitions",{})
+    steps = context.get("answer_steps",{})
     # Build prompt string
     parts = []
 
@@ -70,7 +72,19 @@ def build_block_prompt(payload: Union[str, Dict]) -> str:
             parts.append("## External Data")
             for index,data in enumerate(external_data):
                 parts.append(f"**Source {index+1}**: {data}")
-                       
+    
+    if context:
+        parts.append("\n# CONTEXT SOURCES\n")
+        
+        parts.append('## Definitions')
+        for key,value in definition.items():
+            parts.append(f"- **{key}**: {value}")
+        
+        parts.append("\n## Answer Steps")
+        for step in steps:
+            parts.append(f"- {step}")
+    
+          
     if output:
         parts.append("\n# OUTPUT #\n")
         

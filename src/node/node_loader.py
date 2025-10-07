@@ -4,10 +4,9 @@ import json
 from utils.build_prompt import build_block_prompt
 import os
 from openai import OpenAI
+
 class BaseLoader:
     def __init__(self,config_path):
-        self.config = LLMConfig()
-        self.client = LLMClient(self.config)
         self.config = self.load_json(config_path)
         self.conversation = [{"role": "system", "content": "You are a helpful assistant."}]
         self.set_role()
@@ -44,11 +43,15 @@ class NodeLoader(BaseLoader):
         super().__init__(config_path)
     
     def execute(self,question=None,history:list=None,function=None):
+        
         self.config['input']['user_question'] = question
+
         if history is not None:
             self.conversation = history
         else:
             prompt = build_block_prompt(self.config)
+            
+        print(prompt)
 
         self.conversation.append({"role": "user","content": prompt})
 
