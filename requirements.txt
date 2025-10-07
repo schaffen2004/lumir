@@ -1,6 +1,0 @@
-rich==14.1.0
-agno==1.8.1
-dspy==3.0.3
-pytz==2025.2
-redis
-inferless
